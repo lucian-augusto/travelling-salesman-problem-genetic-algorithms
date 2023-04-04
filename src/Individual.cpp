@@ -25,4 +25,8 @@ void Individual::print() {
   }
 }
 
+void Individual::setGeneByIndex(int index, Gene gene) {
+  this->chromossome[index] = gene;
+}
+
 void Individual::setScore(int score) { this->score = score; }

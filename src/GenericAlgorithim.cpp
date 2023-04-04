@@ -5,6 +5,7 @@
 #include "Population.hpp"
 #include "RNG.hpp"
 #include <algorithm>
+#include <type_traits>
 #include <vector>
 
 void addGeneToIndividualCandidatePool(std::vector<Gene> *individualCandidate,
@@ -54,6 +55,9 @@ void GeneticAlgorithim::executeCycle() {
     NewParents newParents = this->selectForReproduction();
     Individual child =
         this->reproduction(newParents.parent1, newParents.parent2);
+    if (this->rng.generateNumber(100) < this->mutationProbability) {
+      this->mutate(&child);
+    }
     child.setScore(this->fitnessFunction.evaluateIndividual(child));
     newPopulationVector.push_back(child);
   }
@@ -97,7 +101,12 @@ void GeneticAlgorithim::includeMissingGenesToIndividualCandidate(
 }
 
 void GeneticAlgorithim::mutate(Individual *individual) {
-  //
+  int index1 = this->rng.generateNumber(1, this->chromossomeSize);
+  int index2 = this->rng.generateNumber(1, this->chromossomeSize);
+
+  Gene backup = individual->getGeneInIndex(index1);
+  individual->setGeneByIndex(index1, individual->getGeneInIndex(index2));
+  individual->setGeneByIndex(index2, backup);
 }
 
 Individual GeneticAlgorithim::reproduction(Individual parent1,

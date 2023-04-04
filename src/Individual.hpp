@@ -18,5 +18,6 @@ public:
   Gene getGeneInIndex(int index);
   int getScore();
   void print();
+  void setGeneByIndex(int index, Gene gene);
   void setScore(int score);
 };
